@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>支出管理ページ</title>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+<div>
+<body>
+    <h1>支出管理ページ</h1><br>
+
+
+    <div>
+        <h4>追加する</h4>
+    </div>
+    <div><!--追加フォーム-->
+        <form th:action="@{/addRecord}" th:object="${addFormRecord}" method="post">
+            <div>
+                <label>
+                <input type="radio" th:field="*{depoORdraw}" value="true">
+                <strong>入金</strong>
+                </label>
+                <label>
+                <input type="radio" th:field="*{depoORdraw}" value="false">
+                <strong>出金</strong>
+                </label>
+            </div>   
+        <br>
+        
+        日付：<input type="date" th:field="*{date}">
+        費目：<label for="mySelect"></label>
+            <select name="expense_id" th:field="*{expense_id}" onchange="handleSelectChange(this)">
+            <option th:each=" c : ${categores}" 
+                th:value="${c.expense_id}"
+                th:text="${c.expense_name}">
+            </option>
+
+            <!-- 分割線（見栄え用） -->
+            <option value="" disabled>──────────</option>
+            <!-- 新規作成用の特別な項目 -->
+            <option value="add_newExpense" style="color: blue; font-weight: bold;">＋ 新規作成</option>
+            </select>
+        メモ：<input type="text" th:field="*{memo}">
+
+        金額：<input type="text" th:field="*{price}">
+        
+        <button type="submit">追加する</button>
+        </form>
+    </div>
+
+    <form th:action="@{/findAll}" method="get">
+        <button type="submit" name="order" value="asc">昇順</button>
+        <button type="submit" name="order" value="desc">降順</button>
+    </form>
+    
+
+<table border="1">
+    <tr><th>日付</th><th>費目</th><th>メモ</th><th>入金額</th><th>出金額</th></tr>
+    <tr th:each="expense_rc : ${Expense_RC}">
+        <td th:text="${expense_rc.record_date}"></td>
+        <td th:text="${expense_rc.expense_name}"></td>
+        <td th:text="${expense_rc.memo}"></td>
+        <td th:text="${expense_rc.deposit}"></td>
+        <td th:text="${expense_rc.withdraw}"></td>
+    </tr>
+</table>
+
+<!--編集画面に遷移するフォーム-->
+<form th:action="@{/edit}" method="get">
+    <button type="submit">編集画面へ</button>
+</form>
+
+</body>
+</div>
+</html>

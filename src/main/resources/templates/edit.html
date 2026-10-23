@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script th:src="@{/js/app.js}" defer></script>
+    <title>編集画面</title>
+</head>
+
+<body>
+    <div>
+    <h1>編集画面</h1><br>
+
+    <div><!--一括更新＆削除-->
+        <form th:action="@{/update}" th:object="${listAddFormRecord}" method="post">
+            <table border="1">
+            <tr><th>日付</th><th>費目</th><th>メモ</th><th>入金額</th><th>出金額</th><th>削除</th></tr>
+            <tr th:each="r, stat : ${Expense_RC}">
+                <td>
+                     <span th:text="${r.record_date}"></span>
+                    <input type="hidden" th:name="|listRecords[${stat.index}].record_id|" th:value="${r.record_id}">
+                </td>
+                <td>
+                    <select th:name="|listRecords[${stat.index}].expense_id|">
+                        <option th:each=" c : ${categores}" 
+                                th:value="${c.expense_id}"
+                                th:text="${c.expense_name}"
+                                th:selected="${c.expense_name == r.expense_name}"
+                            >
+                        </option>
+                    </select>
+                    
+                </td>
+                <td>
+                    <input type="text" th:name="|listRecords[${stat.index}].memo|" th:value="${r.memo}">
+                </td>
+                <td th:text="${r.deposit}"></td>
+                <td th:text="${r.withdraw}"></td>
+                <td>
+                    <button type="submit" th:formaction="@{/records/{record_id}/delete(record_id=${r.record_id})}" formmethod="post">削除する</button>
+                </td>
+            </tr>
+            </table>
+            <button type="submit">更新する</button>
+        </form>
+    </div>
+  <form th:action="@{/manage}">
+    <button type="submit">戻る</button>
+  </form>
+</div>    
+</body>
+
+</html>
