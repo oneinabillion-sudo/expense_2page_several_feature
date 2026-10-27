@@ -19,7 +19,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <update id="createCategory">
     CREATE TABLE IF NOT EXISTS expense_category (
         expense_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        expense_name VARCHAR(20)
+        expense_name VARCHAR(20),
+        expense_bool BOOLEAN NOT NULL
     )
 </update>
 
@@ -36,14 +37,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </choose>
 </select>
 
-<select id="findAllCategoryName" resultType="com.example.expense_2page.entity.ExpenseRecords">
-    SELECT expense_id, expense_name
+<select id="findAllCategoryName" resultType="com.example.expense_2page.entity.ExpenseCategory">
+    SELECT expense_id, expense_name, expense_bool
     FROM expense_category
 </select>
 
+<select id="getExpenseBool" resultType="java.lang.Boolean">
+    SELECT expense_bool 
+    FROM expense_category
+    WHERE expense_id = #{expense_id}
+</select>
+
+
 <insert id="insertNewExpense" parameterType="com.example.expense_2page.entity.ExpenseCategory" useGeneratedKeys="true" keyProperty="expense_id">
-    INSERT INTO expense_category (expense_name)
-    VALUES (#{expense_name})
+    INSERT INTO expense_category (expense_name, expense_bool)
+    VALUES (#{expense_name}, #{expense_bool})
 </insert>
 
 <insert id="insert" parameterType="com.example.expense_2page.entity.ExpenseRecords" useGeneratedKeys="true" keyProperty="record_id">

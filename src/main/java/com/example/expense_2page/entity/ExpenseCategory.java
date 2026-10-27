@@ -6,4 +6,5 @@ import lombok.Data;
 public class ExpenseCategory {
     private Integer expense_id;
     private String expense_name;
+    private Boolean expense_bool;
 }

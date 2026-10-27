@@ -26,16 +26,17 @@ public class ExpenseService {
         return expenseMapper.findAll(safeOrder);
     }
 
-    // 追加フォームページに出力する費目名データを返す
+    // 追加フォームページに出力する費目名データを返す+ expense_categoryの全件取得
     public List<ExpenseCategory> findAllCategoryName(){
         return expenseMapper.findAllCategoryName();
     }
 
     // 新規費目追記
-    public Integer insertNewExpense(String name){
+    public Integer insertNewExpense(String name, Boolean bool){
         
         ExpenseCategory newExpense = new ExpenseCategory();
         newExpense.setExpense_name(name);
+        newExpense.setExpense_bool(bool);
         expenseMapper.insertNewExpense(newExpense);
 
         return newExpense.getExpense_id();
@@ -44,12 +45,26 @@ public class ExpenseService {
     // 追加　（INSERT）
     public void insert(AddFormRecord addFormRecord){
   
+            System.out.println("Serviceでリクエストが届いたよ。");
+
             ExpenseRecords records = new ExpenseRecords();
             records.setRecord_date(addFormRecord.getDate());
-            records.setExpense_id(addFormRecord.getExpense_id());
+            Integer expense_ID = Integer.parseInt(addFormRecord.getExpense_id());
+            records.setExpense_id(expense_ID);/*
+            １．ここでexpense_idからcategoryのbooleanを取得（expense_bool）
+            ２．ほんでBoolean dORw = expenseMapper.getBool();でこのexpense_idは1なのか0なのか
+
+            問題１expense_idをもとにexpense_boolを取得するSQLを新しく定義する必要がある。
+            dORwがtrueだったら、違ったら↓の処理でやる！
+            */
+
+            Boolean expenseBool = expenseMapper.getExpenseBool(expense_ID);
+
+            System.out.println("真偽値は：" + expenseBool + "だよ");
+
             records.setMemo(addFormRecord.getMemo());
 
-            if(addFormRecord.getDepoORdraw()){// trueだったら入金処理
+            if(expenseBool){// trueだったら入金処理
                 records.setDeposit(addFormRecord.getPrice());
             }else{// falseだったら出金処理
                 records.setWithdraw(addFormRecord.getPrice());
@@ -62,7 +77,9 @@ public class ExpenseService {
             ExpenseRecords entity = new ExpenseRecords();
 
             entity.setRecord_id(record.getRecord_id());
-            entity.setExpense_id(record.getExpense_id());
+
+            Integer expense_ID = Integer.parseInt(record.getExpense_id());
+            entity.setExpense_id(expense_ID);
             entity.setMemo(record.getMemo());
 
             

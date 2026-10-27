@@ -15,36 +15,37 @@
     </div>
     <div><!--追加フォーム-->
         <form th:action="@{/addRecord}" th:object="${addFormRecord}" method="post">
-            <div>
-                <label>
-                <input type="radio" th:field="*{depoORdraw}" value="true">
-                <strong>入金</strong>
-                </label>
-                <label>
-                <input type="radio" th:field="*{depoORdraw}" value="false">
-                <strong>出金</strong>
-                </label>
-            </div>   
-        <br>
-        
-        日付：<input type="date" th:field="*{date}">
-        費目：<label for="mySelect"></label>
-            <select name="expense_id" th:field="*{expense_id}" onchange="handleSelectChange(this)">
-            <option th:each=" c : ${categores}" 
-                th:value="${c.expense_id}"
-                th:text="${c.expense_name}">
-            </option>
+            <br>
+            
+            <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+            日付：<input type="date" th:field="*{date}">
+            費目：<label for="mySelect"></label>
+                <select name="expense_id" th:field="*{expense_id}" onchange="handleSelectChange(this)">
+                <option th:each=" c : ${categores}" 
+                    th:value="${c.expense_id}"
+                    th:text="${c.expense_name}"
+                    th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#f69696'">
+                </option>
 
-            <!-- 分割線（見栄え用） -->
-            <option value="" disabled>──────────</option>
-            <!-- 新規作成用の特別な項目 -->
-            <option value="add_newExpense" style="color: blue; font-weight: bold;">＋ 新規作成</option>
-            </select>
-        メモ：<input type="text" th:field="*{memo}">
+                <!-- 分割線（見栄え用） -->
+                <option value="" disabled>──────────</option>
+                <!-- 新規作成用の特別な項目 -->
+                 
+                <option value="add_newExpense" style="color: blue; font-weight: bold;">＋ 新規作成</option>
+                </select>
 
-        金額：<input type="text" th:field="*{price}">
-        
-        <button type="submit">追加する</button>
+                <div>
+                    <div th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}"></div>
+                    メモ：<input type="text" th:field="*{memo}">
+                </div>
+                
+                <div>
+                    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                    金額：<input type="text" th:field="*{price}">
+                </div>
+                
+            
+            <button type="submit">追加する</button>
         </form>
     </div>
 
@@ -70,6 +71,21 @@
     <button type="submit">編集画面へ</button>
 </form>
 
+<dialog id="categoryDialog">
+    <form method="dialog">
+        <p>新規費目名を入力してください</p>
+        <input id="dialogName" type="text" maxlength="20" required>
+
+        <p>入金科目か出金科目か選択してください</p>
+        <label><input type="radio" name="kind" value="true">入金科目</label>
+        <label><input type="radio" name="kind" value="false">出金科目</label>
+
+        <div>
+            <button value="ok">追加</button>
+            <button value="cancel">キャンセル</button>
+        </div>
+    </form>
+</dialog>
 </body>
 </div>
 </html>

@@ -15,7 +15,9 @@ public interface ExpenseMapper {
 
     List<ExpenseRecords> findAll(@Param("order") String order);// 全件取得
 
-    List<ExpenseCategory> findAllCategoryName();// 費目名、全取得
+    List<ExpenseCategory> findAllCategoryName();// 費目ID、費目名、費目Boolean、全取得
+
+    Boolean getExpenseBool(Integer expense_id);
 
     void insertNewExpense(ExpenseCategory expenseCategory);
 
@@ -24,4 +26,6 @@ public interface ExpenseMapper {
     int update(ExpenseRecords expenseRecords);
 
     void delete(Integer record_id);
+
+    
 }

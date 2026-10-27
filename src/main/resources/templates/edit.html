@@ -22,15 +22,16 @@
                 <td>
                     <select th:name="|listRecords[${stat.index}].expense_id|">
                         <option th:each=" c : ${categores}" 
-                                th:value="${c.expense_id}"
+                                th:value="${c.expense_id }"
                                 th:text="${c.expense_name}"
-                                th:selected="${c.expense_name == r.expense_name}"
-                            >
+                                th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#FF00FF'"
+                                th:selected="${c.expense_name == r.expense_name}">
                         </option>
                     </select>
                     
                 </td>
                 <td>
+                    <div th:if="${#fields.hasErrors('listRecords[__${stat.index}__].memo')}" th:errors="*{listRecords[__${stat.index}__].memo}"></div>
                     <input type="text" th:name="|listRecords[${stat.index}].memo|" th:value="${r.memo}">
                 </td>
                 <td th:text="${r.deposit}"></td>
@@ -47,6 +48,7 @@
     <button type="submit">戻る</button>
   </form>
 </div>    
+
 </body>
 
 </html>

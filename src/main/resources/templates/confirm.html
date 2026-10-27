@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>支出管理ページ</title>
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+<div>
+<body>
+        <form th:action="@{/getAll}" method="get">
+            <button type="submit">カテゴリーテーブル確認</button>
+        </form>
+
+        <table border="1">
+            <tr th:each="stat : ${data}">
+            <td th:text="${stat.expense_id}"></td>
+            <td th:text="${stat.expense_name}"></td>
+            <td th:text="${stat.expense_bool ? '●' : '✕'}"></td>
+        </tr>
+        </table>
+        
+</body>
+</div>
+</html>

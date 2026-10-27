@@ -22,19 +22,24 @@ public class AddCategoryController {
     @PostMapping("/category/add")
     public CategoryDto addCategory(@RequestBody CategoryDto categoryDto) {
         
-        String name = categoryDto.getName().trim();
-
+        String name = categoryDto.getName() == null ? "" : categoryDto.getName().trim();
+        Boolean bool = categoryDto.getBool();
         if(name.isEmpty()){
             // これはテスト用
             throw new IllegalArgumentException("費目名が空です！");
         }
 
+        if(bool == null){
+            throw new IllegalArgumentException("入金/出金が未選択です！");
+        }
+
         // Serviceを読んで、採番されたIDを受け取る
-        Integer newId = expenseService.insertNewExpense(name);
+        Integer newId = expenseService.insertNewExpense(name, bool);
 
         CategoryDto result = new CategoryDto();
         result.setId(newId);
         result.setName(name);
+        result.setBool(bool);
     
         return result;
     }
