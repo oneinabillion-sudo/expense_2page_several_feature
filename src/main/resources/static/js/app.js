@@ -4,10 +4,12 @@ function handleSelectChange(select) {
   const dialog = document.getElementById('categoryDialog');
   const nameInput = document.getElementById('dialogName');
 
+  if(dialog.return)
+
+
   nameInput.value = '';// 初期化
   dialog.querySelectorAll('input[name="kind"]').forEach(r => r.checked = false);
   dialog.returnValue = '';
-
   dialog.addEventListener('close', async () => {/*中で
     ➀「dialogが閉じた理由を確認。」
     ➁ちゃんと追加されたならサーバーに送って、そうでなかったら元に戻す

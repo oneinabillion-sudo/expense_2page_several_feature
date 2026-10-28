@@ -4,88 +4,120 @@
     <meta charset="UTF-8">
     <title>支出管理ページ</title>
     <script th:src="@{/js/app.js}" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
-<div>
 <body>
-    <h1>支出管理ページ</h1><br>
-
-
-    <div>
-        <h4>追加する</h4>
-    </div>
-    <div><!--追加フォーム-->
-        <form th:action="@{/addRecord}" th:object="${addFormRecord}" method="post">
-            <br>
-            
-            <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-            日付：<input type="date" th:field="*{date}">
-            費目：<label for="mySelect"></label>
-                <select name="expense_id" th:field="*{expense_id}" onchange="handleSelectChange(this)">
-                <option th:each=" c : ${categores}" 
-                    th:value="${c.expense_id}"
-                    th:text="${c.expense_name}"
-                    th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#f69696'">
-                </option>
-
-                <!-- 分割線（見栄え用） -->
-                <option value="" disabled>──────────</option>
-                <!-- 新規作成用の特別な項目 -->
-                 
-                <option value="add_newExpense" style="color: blue; font-weight: bold;">＋ 新規作成</option>
-                </select>
-
-                <div>
-                    <div th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}"></div>
-                    メモ：<input type="text" th:field="*{memo}">
-                </div>
-                
-                <div>
-                    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
-                    金額：<input type="text" th:field="*{price}">
-                </div>
-                
-            
-            <button type="submit">追加する</button>
-        </form>
-    </div>
-
-    <form th:action="@{/findAll}" method="get">
-        <button type="submit" name="order" value="asc">昇順</button>
-        <button type="submit" name="order" value="desc">降順</button>
-    </form>
+    <div class="container-sm">
+    <h4 class="text-start">支出管理ページ</h4><br>
     
+    <div class="container-sm">
+        <!--追加フォーム-->
+        <form class="row g-3" th:action="@{/addRecord}" th:object="${addFormRecord}" method="post">
+            
+                <div class="row">
+                    <div class="col">
+                        <label for="inputDate" class="form-label">日付</label>
+                        <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+                        <input type="date" th:field="*{date}" class="form-control" id="inputDate">
+                    </div>
+                    <div class="col">
+                        <label for="inputSelect" class="form-label">費目</label>
+                        <select name="expense_id" th:field="*{expense_id}" class="form-select" id="inputSelect" onchange="handleSelectChange(this)">
+                        <option th:each=" c : ${categores}" 
+                        th:value="${c.expense_id}"
+                        th:text="${c.expense_name}"
+                        th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#f69696'">
+                        </option>
+                        <!-- 分割線（見栄え用） -->
+                        <option value="" disabled>──────────</option>
+                        <!-- 新規作成用の特別な項目 -->
+                        <option value="add_newExpense" style="color: blue; font-weight: bold;">＋ 新規作成</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="inputMemo" class="form-label">メモ</label>
+                        <div th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}"></div>
+                        <input type="text" th:field="*{memo}" class="form-control" id="inputMemo">
+                    </div>
+                    <div class="col">
+                        <label for="inputPrice" class="form-label">金額</label>
+                        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                        <input type="text" th:field="*{price}" class="form-control" id="inputPrice">
+                    </div>
+                </div>
+            
+            <div class="col-12">
+                <button type="submit" class="btn btn-dark">追加する</button>
+            </div>            
+            
+        </form><br>
 
-<table border="1">
-    <tr><th>日付</th><th>費目</th><th>メモ</th><th>入金額</th><th>出金額</th></tr>
-    <tr th:each="expense_rc : ${Expense_RC}">
-        <td th:text="${expense_rc.record_date}"></td>
-        <td th:text="${expense_rc.expense_name}"></td>
-        <td th:text="${expense_rc.memo}"></td>
-        <td th:text="${expense_rc.deposit}"></td>
-        <td th:text="${expense_rc.withdraw}"></td>
-    </tr>
-</table>
 
-<!--編集画面に遷移するフォーム-->
-<form th:action="@{/edit}" method="get">
-    <button type="submit">編集画面へ</button>
-</form>
+        <form class="row g-3" th:action="@{/findAll}" method="get">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary" name="order" value="asc">昇順</button>
+                <button type="submit" class="btn btn-primary" name="order" value="desc">降順</button>
+            </div>
+            
+        </form>
+    
+        <table class="table table-striped-columns">
+            <thead>
+                <tr class="table-primary">
+                    <th class="text-center" scope="col">日付</th>
+                    <th scope="col">費目</th>
+                    <th scope="col">メモ</th>
+                    <th class="text-center" scope="col">入金額</th>
+                    <th class="text-center" scope="col">出金額</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr class="table-light" th:each="expense_rc : ${Expense_RC}">
+                <td class="text-center" th:text="${expense_rc.record_date}"></td>
+                <td th:text="${expense_rc.expense_name}"></td>
+                <td th:text="${expense_rc.memo}"></td>
+                <td class="text-center" th:text="${expense_rc.deposit}"></td>
+                <td class="text-center" th:text="${expense_rc.withdraw}"></td>
+                </tr>
+            </tbody>
+            
+        </table>
 
-<dialog id="categoryDialog">
-    <form method="dialog">
-        <p>新規費目名を入力してください</p>
-        <input id="dialogName" type="text" maxlength="20" required>
+       <!-- 一時的にコメントアウト
+       <table class="table-light">
+            <tr class="table-light"><th>日付</th><th>費目</th><th>メモ</th><th>入金額</th><th>出金額</th></tr>
+            
+        </table> 
+       --> 
 
-        <p>入金科目か出金科目か選択してください</p>
-        <label><input type="radio" name="kind" value="true">入金科目</label>
-        <label><input type="radio" name="kind" value="false">出金科目</label>
+        
 
-        <div>
-            <button value="ok">追加</button>
-            <button value="cancel">キャンセル</button>
-        </div>
-    </form>
-</dialog>
+        <!--編集画面に遷移するフォーム-->
+        <form th:action="@{/edit}" method="get">
+            <div class="col-12"></div>
+            <button type="submit" class="btn btn-dark">編集画面へ</button>
+        </form>
+
+
+    </div>
+
+
+        <dialog id="categoryDialog">
+            <form method="dialog">
+                <p>新規費目名を入力してください</p>
+                <input id="dialogName" type="text" maxlength="20">
+
+                <p>入金科目か出金科目か選択してください</p>
+                <label><input type="radio" name="kind" value="true">入金科目</label>
+                <label><input type="radio" name="kind" value="false">出金科目</label>
+
+                <div>
+                    <button value="ok">追加</button>
+                    <button value="cancel">キャンセル</button>
+                </div>
+            </form>
+        </dialog>
+    </div>
 </body>
-</div>
 </html>

@@ -3,14 +3,12 @@ package com.example.expense_2page.form;
 import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Validated 
 public class AddFormRecord{
     private Integer record_id;
     private Boolean depoORdraw;

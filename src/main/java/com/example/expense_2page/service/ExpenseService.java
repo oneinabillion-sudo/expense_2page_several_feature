@@ -6,6 +6,8 @@ import com.example.expense_2page.entity.ExpenseCategory;
 import com.example.expense_2page.entity.ExpenseRecords;
 import com.example.expense_2page.form.AddFormRecord;
 import com.example.expense_2page.form.ListAddFormRecord;
+import com.example.expense_2page.form.ListUpdateForm;
+import com.example.expense_2page.form.UpdateForm;
 import com.example.expense_2page.mapper.ExpenseMapper;
 
 import java.util.List;
@@ -72,8 +74,8 @@ public class ExpenseService {
             expenseMapper.insert(records);
     }
     // 一括更新
-    public void update(ListAddFormRecord listAddFormRecord){
-        for(AddFormRecord record : listAddFormRecord.getListRecords()){
+    public void update(ListUpdateForm listUpdateForm){
+        for(UpdateForm record : listUpdateForm.getListCheck()){
             ExpenseRecords entity = new ExpenseRecords();
 
             entity.setRecord_id(record.getRecord_id());

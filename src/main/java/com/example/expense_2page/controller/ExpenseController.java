@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.expense_2page.form.AddFormRecord;
 import com.example.expense_2page.form.ListAddFormRecord;
+import com.example.expense_2page.form.ListUpdateForm;
+import com.example.expense_2page.form.UpdateForm;
 import com.example.expense_2page.service.ExpenseService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -54,7 +56,7 @@ public class ExpenseController {
     @GetMapping("/edit")
     public String getAddForm(@RequestParam(defaultValue = "desc") String order,
                              @ModelAttribute ListAddFormRecord listAddFormRecord, 
-                             @ModelAttribute AddFormRecord addFormRecord, Model model) {
+                             @ModelAttribute AddFormRecord addFormRecord, ListUpdateForm listUpdateForm, Model model) {
         model.addAttribute("Expense_RC", expenseservice.findAll(order));
         model.addAttribute("categores", expenseservice.findAllCategoryName());
         return "edit";
@@ -85,33 +87,40 @@ public class ExpenseController {
 
     // 更新
     @PostMapping("/update")
-    public String updateRecords(@Validated @ModelAttribute ListAddFormRecord listAddFormRecord, BindingResult result, 
-        @RequestParam(defaultValue = "desc") String order,
+    public String updateRecords(@Validated @ModelAttribute ListUpdateForm listUpdateForm, BindingResult result, 
+        @RequestParam(defaultValue = "desc") String order, ListAddFormRecord listAddFormRecord,
         @ModelAttribute AddFormRecord addFormRecord, Model model) {
        
-        if(result.hasErrors()){
+
+        System.out.println("/updateでリクエストを受け取りました!");
+
+        if(result.hasErrors()){// エラー時
             
             model.addAttribute("Expense_RC", expenseservice.findAll(order));
             model.addAttribute("categores", expenseservice.findAllCategoryName());
 
+            System.out.println("Validationエラーが起きました！");
+
             return "edit";
         }
-
         
-    
-
         // 正常処理
-        System.out.println("Controllerにリクエストが届きました！");
-        for(AddFormRecord e : listAddFormRecord.getListRecords()){
-            System.out.println(e.getExpense_id());
-            System.out.println(e.getMemo());   
-        }
-        
-        
+        expenseservice.update(listUpdateForm);
 
-        expenseservice.update(listAddFormRecord);
+        System.out.println("----------更新処理前の値----------");
+        for(UpdateForm e : listUpdateForm.getListCheck()){
+            System.out.println(e.getExpense_id());
+            System.out.println(e.getMemo());
+        }
+        System.out.println("---------------------------------");
         
-        return "redirect:/edit";
+        System.out.println("/updateで正常に処理されました！");
+
+        model.addAttribute("Expense_RC", expenseservice.findAll(order));
+        model.addAttribute("categores", expenseservice.findAllCategoryName());
+
+        
+        return "edit";
 
         }
     
