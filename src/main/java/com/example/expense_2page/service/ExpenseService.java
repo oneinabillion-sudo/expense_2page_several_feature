@@ -5,11 +5,12 @@ import org.springframework.stereotype.Service;
 import com.example.expense_2page.entity.ExpenseCategory;
 import com.example.expense_2page.entity.ExpenseRecords;
 import com.example.expense_2page.form.AddFormRecord;
-import com.example.expense_2page.form.ListAddFormRecord;
+import com.example.expense_2page.form.ListFilterForm;
 import com.example.expense_2page.form.ListUpdateForm;
 import com.example.expense_2page.form.UpdateForm;
 import com.example.expense_2page.mapper.ExpenseMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class ExpenseService {
     // 全件取得　（SELECT findAll）
     public List<ExpenseRecords> findAll(String order){
         String safeOrder = "asc".equalsIgnoreCase(order) ? "asc" : "desc";
-        return expenseMapper.findAll(safeOrder);
+        return expenseMapper.findAll(safeOrder, new ArrayList<>());
     }
 
     // 追加フォームページに出力する費目名データを返す+ expense_categoryの全件取得
@@ -96,5 +97,16 @@ public class ExpenseService {
     public void deleteRecord(Integer record_id){
         expenseMapper.delete(record_id);
     }
+
+    // 費目の絞り込み検索
+    public List<ExpenseRecords> getFilterCategory(String order, ListFilterForm listFilterForm){
+        
+
+        String safeOrder = "asc".equalsIgnoreCase(order) ? "asc" : "desc";
+        return expenseMapper.findAll(safeOrder, listFilterForm.getExpenseIdList());
+    }
+
+    
+
 
 }

@@ -9,11 +9,12 @@ import com.example.expense_2page.entity.ExpenseCategory;
 import com.example.expense_2page.entity.ExpenseRecords;
 
 
+
 @Mapper 
 public interface ExpenseMapper {
     
 
-    List<ExpenseRecords> findAll(@Param("order") String order);// 全件取得
+    List<ExpenseRecords> findAll(@Param("order") String order, @Param("filterList") List<Integer> id);// 全件取得
 
     List<ExpenseCategory> findAllCategoryName();// 費目ID、費目名、費目Boolean、全取得
 

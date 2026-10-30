@@ -6,9 +6,10 @@ import jakarta.validation.Valid;
 
 import java.util.ArrayList;
 
+@Valid
 public class ListAddFormRecord {// やばいリスト型のsetter/getterかけんかった
     
-    private List<@Valid AddFormRecord> listRecords = new ArrayList<>();
+    private List<AddFormRecord> listRecords = new ArrayList<>();
 
     public void setListRecords(List<AddFormRecord> listRecords){ this.listRecords = listRecords; }
 

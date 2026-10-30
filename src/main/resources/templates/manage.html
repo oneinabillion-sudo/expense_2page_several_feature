@@ -7,102 +7,174 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container-sm">
+    <div class="container">
     <h4 class="text-start">支出管理ページ</h4><br>
     
-    <div class="container-sm">
-        <!--追加フォーム-->
-        <form class="row g-3" th:action="@{/addRecord}" th:object="${addFormRecord}" method="post">
-            
-                <div class="row">
-                    <div class="col">
-                        <label for="inputDate" class="form-label">日付</label>
-                        <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-                        <input type="date" th:field="*{date}" class="form-control" id="inputDate">
+        <div class="d-flex">
+            <div>
+                <form th:action="@{/filter/expense}" th:object="${listFilterForm}" method="get" id="filterForm">
+                    <!--
+                    <div class="row">
+                    <label for="inputSearch"><strong>絞り込み機能</strong></label><br>
+                    <label for="">食費</label>
+                    <input class="col" type="radio" value="" id="inputSearch">
+                    <label for="">娯楽費</label>
+                    <input class="col" type="radio" value="" id="inputSearch">
+                    <label for="">日用品</label>
+                    <input class="col" type="radio" value="" id="inputSearch">
+                    <label for="">水道光熱費</label>
+                    <input class="col" type="radio" value="" id="inputSearch">
+                    <label for="">接待交際費</label>
+                    <input class="col" type="radio" value="" id="inputSearch">
                     </div>
-                    <div class="col">
-                        <label for="inputSelect" class="form-label">費目</label>
-                        <select name="expense_id" th:field="*{expense_id}" class="form-select" id="inputSelect" onchange="handleSelectChange(this)">
-                        <option th:each=" c : ${categores}" 
-                        th:value="${c.expense_id}"
-                        th:text="${c.expense_name}"
-                        th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#f69696'">
-                        </option>
-                        <!-- 分割線（見栄え用） -->
-                        <option value="" disabled>──────────</option>
-                        <!-- 新規作成用の特別な項目 -->
-                        <option value="add_newExpense" style="color: blue; font-weight: bold;">＋ 新規作成</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <label for="inputMemo" class="form-label">メモ</label>
-                        <div th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}"></div>
-                        <input type="text" th:field="*{memo}" class="form-control" id="inputMemo">
-                    </div>
-                    <div class="col">
-                        <label for="inputPrice" class="form-label">金額</label>
-                        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
-                        <input type="text" th:field="*{price}" class="form-control" id="inputPrice">
+                    -->
+                    
+                    <ul>
+                        <label><strong>絞り込み：費目</strong></label>
+                        <li th:each=" c : ${categories}">
+                            <label for="inputCategory" th:text="${c.expense_name}"></label>
+                            <input type="checkbox" th:field="*{expenseIdList}" th:value="${c.expense_id}" id="inputCategory" >        
+                        </li>
+                    </ul>
+                    <button type="submit">絞り込み</button>
+                    <button type="submit" th:formaction="@{/manage}" formmethod="get">絞り込み解除</button>
+                </form>
+            </div>
+            <div>
+                <!--追加フォーム-->
+
+                <form class="row g-3" th:action="@{/addRecord}" th:object="${addFormRecord}" method="post">
+                    
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputDate" class="form-label">日付</label>
+                                <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+                                <input type="date" th:field="*{date}" class="form-control" id="inputDate">
+                            </div>
+                            <div class="col">
+                                <label for="inputSelect" class="form-label">費目</label>
+                                <select name="expense_id" th:field="*{expense_id}" class="form-select" id="inputSelect" onchange="handleSelectChange(this)">
+                                <option th:each=" c : ${categories}" 
+                                th:value="${c.expense_id}"
+                                th:text="${c.expense_name}"
+                                th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#f69696'">
+                                </option>
+                                <!-- 分割線（見栄え用） -->
+                                <option value="" disabled>──────────</option>
+                                <!-- 新規作成用の特別な項目 -->
+                                <option value="add_newExpense" style="color: blue; font-weight: bold;">＋ 新規作成</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="inputMemo" class="form-label">メモ</label>
+                                <div th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}"></div>
+                                <input type="text" th:field="*{memo}" class="form-control" id="inputMemo">
+                            </div>
+                            <div class="col">
+                                <label for="inputPrice" class="form-label">金額</label>
+                                <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                <input type="text" th:field="*{price}" class="form-control" id="inputPrice">
+                            </div>
+                        </div>
+                    
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-dark">追加する</button>
+                    </div>            
+                    
+                </form><br>
+
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <button type="submit" form="filterForm" class="btn btn-primary" name="order" value="asc">昇順</button>
+                        <button type="submit" form="filterForm" class="btn btn-primary" name="order" value="desc">降順</button>
                     </div>
                 </div>
-            
-            <div class="col-12">
-                <button type="submit" class="btn btn-dark">追加する</button>
-            </div>            
-            
-        </form><br>
-
-
-        <form class="row g-3" th:action="@{/findAll}" method="get">
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary" name="order" value="asc">昇順</button>
-                <button type="submit" class="btn btn-primary" name="order" value="desc">降順</button>
-            </div>
-            
-        </form>
     
-        <table class="table table-striped-columns">
-            <thead>
-                <tr class="table-primary">
-                    <th class="text-center" scope="col">日付</th>
-                    <th scope="col">費目</th>
-                    <th scope="col">メモ</th>
-                    <th class="text-center" scope="col">入金額</th>
-                    <th class="text-center" scope="col">出金額</th>
-                </tr>
-            </thead>
+
+                <table class="table  table-striped-columns">
+                    <thead>
+                        <tr class="table-primary">
+                            <th class="text-center" scope="col">日付</th>
+                            <th scope="col">費目</th>
+                            <th scope="col">メモ</th>
+                            <th class="text-center" scope="col">入金額</th>
+                            <th class="text-center" scope="col">出金額</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <tr class="table-light" th:each="expense_rc : ${Expense_RC}">
+                        <td class="text-center" th:text="${expense_rc.record_date}"></td>
+                        <td th:text="${expense_rc.expense_name}"></td>
+                        <td th:text="${expense_rc.memo}"></td>
+                        <td class="text-center" th:text="${expense_rc.deposit}"></td>
+                        <td class="text-center" th:text="${expense_rc.withdraw}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--
+                <table class="table table-striped-columns">
+                    <thead>
+                        <tr class="table-primary">
+                            <th class="text-center" scope="col">日付</th>
+                            <th scope="col">費目</th>
+                            <th scope="col">メモ</th>
+                            <th class="text-center" scope="col">入金額</th>
+                            <th class="text-center" scope="col">出金額</th>
+                            <th scope="col">削除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-light"><td class="text-center">2026-10-01</td><td>水道光熱費</td><td>先月分</td><td></td><td>15000</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-08-08</td><td>交通費</td><td>定期券購入</td><td></td><td>4500</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-04-15</td><td>食費</td><td>スーパー</td><td></td><td>3600</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-04-12</td><td>娯楽</td><td>映画</td><td></td><td>1900</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-04-06</td><td>食費</td><td>ランチ</td><td></td><td>1200</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-04-03</td><td>日用品</td><td>歯ブラシ</td><td></td><td>540</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-04-01</td><td>食費</td><td>コンビニ</td><td></td><td>560</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-03-25</td><td>給与</td><td>3月分給与</td><td>250000</td><td></td></tr>
+                        <tr class="table-light"><td class="text-center">2026-03-15</td><td>食費</td><td>カフェ</td><td></td><td>700</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-03-12</td><td>日用品</td><td>洗濯用品</td><td></td><td>1450</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-03-09</td><td>娯楽</td><td>ボウリング</td><td></td><td>2200</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-03-07</td><td>食費</td><td>スーパー</td><td></td><td>3200</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-03-02</td><td>食費</td><td>ランチ</td><td></td><td>1050</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-02-27</td><td>日用品</td><td>電球</td><td></td><td>750</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-02-25</td><td>給与</td><td>2月分給与</td><td>250000</td><td></td></tr>
+                        <tr class="table-light"><td class="text-center">2026-02-23</td><td>食費</td><td>スーパー</td><td></td><td>3500</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-02-17</td><td>食費</td><td>コンビニ</td><td></td><td>480</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-02-14</td><td>娯楽</td><td>ライブチケット</td><td></td><td>5500</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-02-10</td><td>日用品</td><td>ティッシュ</td><td></td><td>680</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-02-01</td><td>食費</td><td>スーパー</td><td></td><td>2800</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-28</td><td>娯楽</td><td>書籍</td><td></td><td>1500</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-25</td><td>給与</td><td>1月分給与</td><td>250000</td><td></td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-22</td><td>日用品</td><td>洗剤</td><td></td><td>1200</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-19</td><td>食費</td><td>カフェ</td><td></td><td>650</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-15</td><td>娯楽</td><td>映画</td><td></td><td>1900</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-12</td><td>食費</td><td>スーパー</td><td></td><td>3100</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-09</td><td>交通費</td><td>電車代</td><td></td><td>1280</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-06</td><td>食費</td><td>ランチ</td><td></td><td>980</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-04</td><td>日用品</td><td>シャンプー</td><td></td><td>890</td></tr>
+                        <tr class="table-light"><td class="text-center">2026-01-02</td><td>食費</td><td>コンビニ</td><td></td><td>420</td></tr>
+                    </tbody>
+                </table>
+                -->
+                
+
             
-            <tbody>
-                <tr class="table-light" th:each="expense_rc : ${Expense_RC}">
-                <td class="text-center" th:text="${expense_rc.record_date}"></td>
-                <td th:text="${expense_rc.expense_name}"></td>
-                <td th:text="${expense_rc.memo}"></td>
-                <td class="text-center" th:text="${expense_rc.deposit}"></td>
-                <td class="text-center" th:text="${expense_rc.withdraw}"></td>
-                </tr>
-            </tbody>
-            
-        </table>
-
-       <!-- 一時的にコメントアウト
-       <table class="table-light">
-            <tr class="table-light"><th>日付</th><th>費目</th><th>メモ</th><th>入金額</th><th>出金額</th></tr>
-            
-        </table> 
-       --> 
-
-        
-
-        <!--編集画面に遷移するフォーム-->
-        <form th:action="@{/edit}" method="get">
-            <div class="col-12"></div>
-            <button type="submit" class="btn btn-dark">編集画面へ</button>
-        </form>
+                <!---->
 
 
-    </div>
+                <!--編集画面に遷移するフォーム-->
+                <form th:action="@{/edit}" method="get">
+                    <div class="col-12"></div>
+                    <button type="submit" class="btn btn-dark">編集画面へ</button>
+                </form>
 
 
+            </div>
+
+        </div>
         <dialog id="categoryDialog">
             <form method="dialog">
                 <p>新規費目名を入力してください</p>
@@ -118,6 +190,8 @@
                 </div>
             </form>
         </dialog>
+    
+    
     </div>
 </body>
 </html>

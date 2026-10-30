@@ -62,9 +62,6 @@
                     </table>
                     -->
                     
-                    <!--
-                    
-                    -->
                     <table class="table table-striped-columns">
                         <thead>
                             <tr class="table-primary">
@@ -84,7 +81,7 @@
                                 </td>
                                 <td>
                                 <select class="form-select" th:name="|listCheck[${stat.index}].expense_id|">
-                                    <option th:each=" c : ${categores}" 
+                                    <option th:each=" c : ${categories}" 
                                         th:value="${c.expense_id }"
                                         th:text="${c.expense_name}"
                                         th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#FF00FF'"
