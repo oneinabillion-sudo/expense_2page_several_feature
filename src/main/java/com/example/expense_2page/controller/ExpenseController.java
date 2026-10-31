@@ -35,7 +35,7 @@ public class ExpenseController {
         System.out.println("アクセス時のリクエストが届きました");
 
         model.addAttribute("listFilterForm", new ListFilterForm());
-        model.addAttribute("Expense_RC", expenseService.findAll(order));// categoriesに修正
+        model.addAttribute("Expense_RC", expenseService.findRecord(order));// categoriesに修正
         model.addAttribute("categories", expenseService.findAllCategoryName());
         return "manage";
     }
@@ -46,7 +46,7 @@ public class ExpenseController {
             Model model) {
         System.out.println("一覧表示のリクエストが届きました");
 
-        model.addAttribute("Expense_RC", expenseService.findAll(order));
+        model.addAttribute("Expense_RC", expenseService.findRecord(order));
         model.addAttribute("categories", expenseService.findAllCategoryName());
         return "manage";
     }
@@ -56,7 +56,7 @@ public class ExpenseController {
     public String getAddForm(@RequestParam(defaultValue = "desc") String order,
             @ModelAttribute ListAddFormRecord listAddFormRecord,
             @ModelAttribute AddFormRecord addFormRecord, ListUpdateForm listUpdateForm, Model model) {
-        model.addAttribute("Expense_RC", expenseService.findAll(order));
+        model.addAttribute("Expense_RC", expenseService.findRecord(order));
         model.addAttribute("categories", expenseService.findAllCategoryName());
         return "edit";
     }
@@ -72,7 +72,7 @@ public class ExpenseController {
 
         if (result.hasErrors()) {
             System.out.println("バリデーションエラーが起きたよ");
-            model.addAttribute("Expense_RC", expenseService.findAll(order));
+            model.addAttribute("Expense_RC", expenseService.findRecord(order));
             model.addAttribute("categories", expenseService.findAllCategoryName());
 
             return "manage";
@@ -80,7 +80,7 @@ public class ExpenseController {
 
         expenseService.insert(addFormRecord);
         System.out.println("正常に処理がされたよ");
-        model.addAttribute("Expense_RC", expenseService.findAll(order));
+        model.addAttribute("Expense_RC", expenseService.findRecord(order));
         model.addAttribute("categories", expenseService.findAllCategoryName());
 
         return "manage";
@@ -96,7 +96,7 @@ public class ExpenseController {
 
         if (result.hasErrors()) {// エラー時
 
-            model.addAttribute("Expense_RC", expenseService.findAll(order));
+            model.addAttribute("Expense_RC", expenseService.findRecord(order));
             model.addAttribute("categories", expenseService.findAllCategoryName());
 
             System.out.println("Validationエラーが起きました！");
@@ -115,7 +115,7 @@ public class ExpenseController {
 
         System.out.println("/updateで正常に処理されました！");
 
-        model.addAttribute("Expense_RC", expenseService.findAll(order));
+        model.addAttribute("Expense_RC", expenseService.findRecord(order));
         model.addAttribute("categories", expenseService.findAllCategoryName());
 
         return "edit";

@@ -24,9 +24,9 @@ public class ExpenseService {
     }
 
     // 全件取得　（SELECT findAll）
-    public List<ExpenseRecords> findAll(String order){
+    public List<ExpenseRecords> findRecord(String order){
         String safeOrder = "asc".equalsIgnoreCase(order) ? "asc" : "desc";
-        return expenseMapper.findAll(safeOrder, new ArrayList<>());
+        return expenseMapper.findRecord(safeOrder, new ArrayList<>());
     }
 
     // 追加フォームページに出力する費目名データを返す+ expense_categoryの全件取得
@@ -103,7 +103,7 @@ public class ExpenseService {
         
 
         String safeOrder = "asc".equalsIgnoreCase(order) ? "asc" : "desc";
-        return expenseMapper.findAll(safeOrder, listFilterForm.getExpenseIdList());
+        return expenseMapper.findRecord(safeOrder, listFilterForm.getExpenseIdList());
     }
 
     
