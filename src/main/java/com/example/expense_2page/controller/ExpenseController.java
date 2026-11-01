@@ -1,5 +1,6 @@
 package com.example.expense_2page.controller;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,7 +16,9 @@ import com.example.expense_2page.form.ListAddFormRecord;
 import com.example.expense_2page.form.ListUpdateForm;
 import com.example.expense_2page.form.UpdateForm;
 import com.example.expense_2page.service.ExpenseService;
+import com.example.expense_2page.enums.Period;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ExpenseController {
@@ -35,8 +38,10 @@ public class ExpenseController {
         System.out.println("アクセス時のリクエストが届きました");
 
         model.addAttribute("listFilterForm", new ListFilterForm());
+        model.addAttribute("DateList", Period.values());
         model.addAttribute("Expense_RC", expenseService.findRecord(order));// categoriesに修正
         model.addAttribute("categories", expenseService.findAllCategoryName());
+        
         return "manage";
     }
 
@@ -147,7 +152,10 @@ public class ExpenseController {
 
         System.out.println("絞り込みのリクエスト値を受け取りました！");
 
-        model.addAttribute("Expense_RC", expenseService.getFilterCategory(order, listFilterForm));
+
+        model.addAttribute("listFilterForm", new ListFilterForm());
+        model.addAttribute("DateList", Period.values());
+        model.addAttribute("Expense_RC", expenseService.getFilterRecord(order, listFilterForm));
         model.addAttribute("categories", expenseService.findAllCategoryName());
 
         return "manage";

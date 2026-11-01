@@ -28,16 +28,31 @@
                     <input class="col" type="radio" value="" id="inputSearch">
                     </div>
                     -->
-                    
+                    <h4>絞り込み</h4>
+
                     <ul>
-                        <label><strong>絞り込み：費目</strong></label>
+                        <strong>費目</strong>
                         <li th:each=" c : ${categories}">
                             <label for="inputCategory" th:text="${c.expense_name}"></label>
                             <input type="checkbox" th:field="*{expenseIdList}" th:value="${c.expense_id}" id="inputCategory" >        
                         </li>
                     </ul>
-                    <button type="submit">絞り込み</button>
+
+                        <strong>日付</strong>
+                        <select name="period">
+                        <option th:each=" date : ${DateList} "
+                        th:text="${date.label}"
+                        th:value="${date.name()}"
+                        th:name="${date.label}"
+                        >
+                        </option>
+                    </select><br>
+
+
+                    <button type="submit">絞り込み</button><br>
                     <button type="submit" th:formaction="@{/manage}" formmethod="get">絞り込み解除</button>
+
+                    
                 </form>
             </div>
             <div>

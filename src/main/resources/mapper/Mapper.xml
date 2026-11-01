@@ -34,9 +34,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM expense_record AS r
         LEFT JOIN expense_category AS c
         ON r.expense_id = c.expense_id
+
         <where>
+            <choose>
+            <when test="period == 'TODAY'">
+                r.record_date &gt;= CURDATE()
+                AND r.record_date &lt; CURDATE() + INTERVAL 1 DAY
+            </when>
+            <when test="period == 'WEEK'">
+                r.record_date &gt;= CURDATE() - INTERVAL 7 DAY
+                AND r.record_date &lt; CURDATE() + INTERVAL 1 DAY
+            </when>
+            <when test="period == 'MONTH'">
+                r.record_date &gt;= CURDATE() - INTERVAL 1 MONTH
+                AND r.record_date &lt; CURDATE() + INTERVAL 1 DAY
+            </when>
+            <when test="period == 'YEAR'">
+                r.record_date &gt;= CURDATE() - INTERVAL 1 YEAR
+                AND r.record_date &lt; CURDATE() + INTERVAL 1 DAY
+            </when>
+            <otherwise></otherwise>
+            </choose>
             <if test="filterList != null and filterList.size() > 0">
-            r.expense_id IN 
+            AND r.expense_id IN 
             <foreach 
                 collection="filterList"
                 item="id"

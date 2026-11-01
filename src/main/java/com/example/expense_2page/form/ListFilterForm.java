@@ -11,5 +11,7 @@ import lombok.Data;
 public class ListFilterForm {
 
     private List<Integer> expenseIdList = new ArrayList<>();
+
+    private String period;
     
 }

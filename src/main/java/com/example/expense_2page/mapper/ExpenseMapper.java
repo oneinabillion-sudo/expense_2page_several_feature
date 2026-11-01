@@ -14,7 +14,8 @@ import com.example.expense_2page.entity.ExpenseRecords;
 public interface ExpenseMapper {
     
 
-    List<ExpenseRecords> findRecord(@Param("order") String order, @Param("filterList") List<Integer> id);// 全件取得
+    List<ExpenseRecords> findRecord(@Param("order") String order, @Param("filterList") List<Integer> id,
+                            @Param("period") String period);// 全件取得
 
     List<ExpenseCategory> findAllCategoryName();// 費目ID、費目名、費目Boolean、全取得
 
