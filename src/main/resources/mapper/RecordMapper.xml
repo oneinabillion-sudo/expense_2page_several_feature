@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     -->
 
-    <select id="findRecord" resultType="com.example.expense_2page.entity.ExpenseRecords">
+    <select id="findRecord" resultType="com.example.expense_2page.entity.ExpenseRecord">
         SELECT r.record_id, r.record_date, c.expense_name, r.memo, r.deposit, r.withdraw 
         FROM expense_record AS r
         LEFT JOIN expense_category AS c
@@ -76,26 +76,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
-    <insert id="insert" parameterType="com.example.expense_2page.entity.ExpenseRecords" useGeneratedKeys="true" keyProperty="recordId">
+    <insert id="insert" parameterType="com.example.expense_2page.entity.ExpenseRecord" useGeneratedKeys="true" keyProperty="recordId">
         INSERT INTO expense_record (record_date, expense_id, memo, deposit, withdraw)
         VALUES (#{recordDate},#{expenseId},#{memo},#{deposit},#{withdraw})
     </insert>
 
-    <update id="update" parameterType="com.example.expense_2page.entity.ExpenseRecords">
+    <update id="update" parameterType="com.example.expense_2page.entity.ExpenseRecord">
         UPDATE expense_record
         SET expense_id = #{expenseId}, memo = #{memo}
         WHERE record_id = #{recordId}
         AND (expense_id != #{expenseId} OR memo != #{memo})
     </update>
 
-    <delete id="delete" parameterType="com.example.expense_2page.entity.ExpenseRecords">
+    <delete id="delete" parameterType="com.example.expense_2page.entity.ExpenseRecord">
         DELETE FROM expense_record
         WHERE record_id = #{recordId}
 
     </delete>
 
     <!--絞り込み検索-->
-    <select id="selectFilter" resultType="com.example.expense_2page.entity.ExpenseRecords">
+    <select id="selectFilter" resultType="com.example.expense_2page.entity.ExpenseRecord">
         SELECT r.record_id, r.record_date, c.expense_name, r.memo, r.deposit, r.withdraw 
         FROM expense_record AS r
         LEFT JOIN expense_category AS c

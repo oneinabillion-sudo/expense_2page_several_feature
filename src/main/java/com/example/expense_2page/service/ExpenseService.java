@@ -3,7 +3,7 @@ package com.example.expense_2page.service;
 import org.springframework.stereotype.Service;
 
 import com.example.expense_2page.entity.ExpenseCategory;
-import com.example.expense_2page.entity.ExpenseRecords;
+import com.example.expense_2page.entity.ExpenseRecord;
 import com.example.expense_2page.form.AddFormRecord;
 import com.example.expense_2page.form.ListFilterForm;
 import com.example.expense_2page.form.ListUpdateForm;
@@ -29,7 +29,7 @@ public class ExpenseService {
     private final ExpenseCategoryMapper categoryMapper;
 
     // 全件取得　（SELECT findAll）
-    public List<ExpenseRecords> findRecord(String order){
+    public List<ExpenseRecord> findRecord(String order){
         String safeOrder = "asc".equalsIgnoreCase(order) ? "asc" : "desc";
         ListFilterForm filterValues = new ListFilterForm();
 
@@ -58,7 +58,7 @@ public class ExpenseService {
   
             System.out.println("Serviceでリクエストが届いたよ。");
 
-            ExpenseRecords records = new ExpenseRecords();
+            ExpenseRecord records = new ExpenseRecord();
             records.setRecordDate(addFormRecord.getDate());
             Integer expenseID = Integer.parseInt(addFormRecord.getExpenseId());
             records.setExpenseId(expenseID);/*
@@ -85,7 +85,7 @@ public class ExpenseService {
     // 一括更新
     public void update(ListUpdateForm listUpdateForm){
         for(UpdateForm record : listUpdateForm.getListCheck()){
-            ExpenseRecords entity = new ExpenseRecords();
+            ExpenseRecord entity = new ExpenseRecord();
 
             entity.setRecordId(record.getRecordId());
 
@@ -107,7 +107,7 @@ public class ExpenseService {
     }
 
     // 費目の絞り込み検索
-    public List<ExpenseRecords> getFilterRecord(String order, ListFilterForm listFilterForm){
+    public List<ExpenseRecord> getFilterRecord(String order, ListFilterForm listFilterForm){
         
 
         String safeOrder = "asc".equalsIgnoreCase(order) ? "asc" : "desc";

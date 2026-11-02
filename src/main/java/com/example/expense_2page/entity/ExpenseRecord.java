@@ -3,7 +3,7 @@ package com.example.expense_2page.entity;
 import lombok.Data;
 import java.time.LocalDate;
 @Data 
-public class ExpenseRecords {
+public class ExpenseRecord {
     private Integer recordId;
     private LocalDate recordDate;
     private Integer expenseId;

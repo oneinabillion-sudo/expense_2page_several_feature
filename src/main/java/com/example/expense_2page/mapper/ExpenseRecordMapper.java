@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 
-import com.example.expense_2page.entity.ExpenseRecords;
+import com.example.expense_2page.entity.ExpenseRecord;
 
 
 
@@ -14,12 +14,12 @@ import com.example.expense_2page.entity.ExpenseRecords;
 public interface ExpenseRecordMapper {
     
 
-    List<ExpenseRecords> findRecord(@Param("order") String order, @Param("filterList") List<Integer> id,
+    List<ExpenseRecord> findRecord(@Param("order") String order, @Param("filterList") List<Integer> id,
                             @Param("period") String period, @Param("keyword") String keyword);
 
-    void insert(ExpenseRecords expenseRecords);
+    void insert(ExpenseRecord expenseRecord);
 
-    int update(ExpenseRecords expenseRecords);
+    int update(ExpenseRecord expenseRecord);
 
     void delete(Integer recordId);
 
