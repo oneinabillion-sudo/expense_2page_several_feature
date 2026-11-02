@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import jakarta.validation.Valid;
+
 public class ListUpdateForm {
     
     private List<@Valid UpdateForm> listCheck = new ArrayList<>();

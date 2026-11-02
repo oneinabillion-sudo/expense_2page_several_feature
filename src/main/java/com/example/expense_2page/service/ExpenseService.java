@@ -46,11 +46,11 @@ public class ExpenseService {
     public Integer insertNewExpense(String name, Boolean bool){
         
         ExpenseCategory newExpense = new ExpenseCategory();
-        newExpense.setExpense_name(name);
-        newExpense.setExpense_bool(bool);
+        newExpense.setExpenseName(name);
+        newExpense.setExpenseBool(bool);
         categoryMapper.insertNewExpense(newExpense);
 
-        return newExpense.getExpense_id();
+        return newExpense.getExpenseId();
     }
 
     // 追加　（INSERT）
@@ -59,9 +59,9 @@ public class ExpenseService {
             System.out.println("Serviceでリクエストが届いたよ。");
 
             ExpenseRecords records = new ExpenseRecords();
-            records.setRecord_date(addFormRecord.getDate());
-            Integer expense_ID = Integer.parseInt(addFormRecord.getExpense_id());
-            records.setExpense_id(expense_ID);/*
+            records.setRecordDate(addFormRecord.getDate());
+            Integer expenseID = Integer.parseInt(addFormRecord.getExpenseId());
+            records.setExpenseId(expenseID);/*
             １．ここでexpense_idからcategoryのbooleanを取得（expense_bool）
             ２．ほんでBoolean dORw = expenseMapper.getBool();でこのexpense_idは1なのか0なのか
 
@@ -69,7 +69,7 @@ public class ExpenseService {
             dORwがtrueだったら、違ったら↓の処理でやる！
             */
 
-            Boolean expenseBool = categoryMapper.getExpenseBool(expense_ID);
+            Boolean expenseBool = categoryMapper.getExpenseBool(expenseID);
 
             System.out.println("真偽値は：" + expenseBool + "だよ");
 
@@ -87,10 +87,10 @@ public class ExpenseService {
         for(UpdateForm record : listUpdateForm.getListCheck()){
             ExpenseRecords entity = new ExpenseRecords();
 
-            entity.setRecord_id(record.getRecord_id());
+            entity.setRecordId(record.getRecordId());
 
-            Integer expense_ID = Integer.parseInt(record.getExpense_id());
-            entity.setExpense_id(expense_ID);
+            Integer expenseID = Integer.parseInt(record.getExpenseId());
+            entity.setExpenseId(expenseID);
             entity.setMemo(record.getMemo());
 
             
@@ -102,8 +102,8 @@ public class ExpenseService {
     }
 
     // 1行削除
-    public void deleteRecord(Integer record_id){
-        recordMapper.delete(record_id);
+    public void deleteRecord(Integer recordId){
+        recordMapper.delete(recordId);
     }
 
     // 費目の絞り込み検索

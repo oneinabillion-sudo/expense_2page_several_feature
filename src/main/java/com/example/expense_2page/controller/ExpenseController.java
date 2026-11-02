@@ -95,7 +95,7 @@ public class ExpenseController {
     // 更新：（一括更新処理）
     @PostMapping("/update")
     public String updateRecords(@Validated @ModelAttribute ListUpdateForm listUpdateForm, BindingResult result,
-            @RequestParam(defaultValue = "desc") String order, ListAddFormRecord listAddFormRecord,
+            @RequestParam(defaultValue = "desc") String order, ListAddFormRecord listAddFormRecord, UpdateForm updateForm,
             @ModelAttribute AddFormRecord addFormRecord, Model model) {
 
         System.out.println("/updateでリクエストを受け取りました!");
@@ -104,9 +104,12 @@ public class ExpenseController {
 
             model.addAttribute("Expense_RC", expenseService.findRecord(order));
             model.addAttribute("categories", expenseService.findAllCategoryName());
-
+            result.getAllErrors().forEach(e -> System.out.println(e));
             System.out.println("Validationエラーが起きました！");
-
+            for(UpdateForm e : listUpdateForm.getListCheck()){
+                System.out.println(e.getExpenseId()+ "expenseId");
+                System.out.println(e.getMemo() + "memo");   
+            }
             return "edit";
         }
 
@@ -114,7 +117,7 @@ public class ExpenseController {
 
         System.out.println("----------更新処理前の値----------");
         for (UpdateForm e : listUpdateForm.getListCheck()) {
-            System.out.println(e.getExpense_id());
+            System.out.println(e.getExpenseId());
             System.out.println(e.getMemo());
         }
         System.out.println("---------------------------------");
@@ -129,11 +132,11 @@ public class ExpenseController {
     }
 
     // 1レコード文の削除ボタン押下後のハンドラーメソッド
-    @PostMapping("/records/{record_id}/delete")
-    public String recordDelete(@PathVariable Integer record_id) {
+    @PostMapping("/records/{recordId}/delete")
+    public String recordDelete(@PathVariable Integer recordId) {
 
         System.out.println("正常にリクエストが届きました！");
-        expenseService.deleteRecord(record_id);
+        expenseService.deleteRecord(recordId);
         return "redirect:/edit";
     }
 

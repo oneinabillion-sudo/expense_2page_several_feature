@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data 
 public class AddNewExpense {
-    private Integer expense_id;
+    private Integer expenseId;
 
     @NotBlank (message = "新しい費目を入力してください")
-    private String expense_name;
+    private String expenseName;
 }

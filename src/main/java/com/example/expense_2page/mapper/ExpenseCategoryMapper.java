@@ -17,5 +17,5 @@ public interface ExpenseCategoryMapper {
     
     void insertNewExpense(ExpenseCategory expenseCategory);
 
-    Boolean getExpenseBool(Integer expense_id);
+    Boolean getExpenseBool(Integer expenseId);
 }

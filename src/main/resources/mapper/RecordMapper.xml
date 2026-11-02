@@ -76,21 +76,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
-    <insert id="insert" parameterType="com.example.expense_2page.entity.ExpenseRecords" useGeneratedKeys="true" keyProperty="record_id">
+    <insert id="insert" parameterType="com.example.expense_2page.entity.ExpenseRecords" useGeneratedKeys="true" keyProperty="recordId">
         INSERT INTO expense_record (record_date, expense_id, memo, deposit, withdraw)
-        VALUES (#{record_date},#{expense_id},#{memo},#{deposit},#{withdraw})
+        VALUES (#{recordDate},#{expenseId},#{memo},#{deposit},#{withdraw})
     </insert>
 
     <update id="update" parameterType="com.example.expense_2page.entity.ExpenseRecords">
         UPDATE expense_record
-        SET expense_id = #{expense_id}, memo = #{memo}
-        WHERE record_id = #{record_id}
-        AND (expense_id != #{expense_id} OR memo != #{memo})
+        SET expense_id = #{expenseId}, memo = #{memo}
+        WHERE record_id = #{recordId}
+        AND (expense_id != #{expenseId} OR memo != #{memo})
     </update>
 
     <delete id="delete" parameterType="com.example.expense_2page.entity.ExpenseRecords">
         DELETE FROM expense_record
-        WHERE record_id = #{record_id}
+        WHERE record_id = #{recordId}
 
     </delete>
 

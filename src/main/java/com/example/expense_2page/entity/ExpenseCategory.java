@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data 
 public class ExpenseCategory {
-    private Integer expense_id;
-    private String expense_name;
-    private Boolean expense_bool;
+    private Integer expenseId;
+    private String expenseName;
+    private Boolean expenseBool;
 }

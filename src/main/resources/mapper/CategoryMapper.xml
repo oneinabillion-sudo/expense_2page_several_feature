@@ -13,12 +13,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getExpenseBool" resultType="java.lang.Boolean">
         SELECT expense_bool 
         FROM expense_category
-        WHERE expense_id = #{expense_id}
+        WHERE expense_id = #{expenseId}
     </select>
 
 
-    <insert id="insertNewExpense" parameterType="com.example.expense_2page.entity.ExpenseCategory" useGeneratedKeys="true" keyProperty="expense_id">
+    <insert id="insertNewExpense" parameterType="com.example.expense_2page.entity.ExpenseCategory" useGeneratedKeys="true" keyProperty="expenseId">
         INSERT INTO expense_category (expense_name, expense_bool)
-        VALUES (#{expense_name}, #{expense_bool})
+        VALUES (#{expenseName}, #{expenseBool})
     </insert>
 </mapper>

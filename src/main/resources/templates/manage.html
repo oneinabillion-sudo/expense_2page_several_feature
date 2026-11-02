@@ -33,8 +33,8 @@
                     <ul>
                         <strong>費目</strong>
                         <li th:each=" c : ${categories}">
-                            <label for="inputCategory" th:text="${c.expense_name}"></label>
-                            <input type="checkbox" th:field="*{expenseIdList}" th:value="${c.expense_id}" id="inputCategory" >        
+                            <label for="inputCategory" th:text="${c.expenseName}"></label>
+                            <input type="checkbox" th:field="*{expenseIdList}" th:value="${c.expenseId}" id="inputCategory" >        
                         </li>
                     </ul>
 
@@ -72,11 +72,11 @@
                             </div>
                             <div class="col">
                                 <label for="inputSelect" class="form-label">費目</label>
-                                <select name="expense_id" th:field="*{expense_id}" class="form-select" id="inputSelect" onchange="handleSelectChange(this)">
+                                <select name="expenseId" th:field="*{expenseId}" class="form-select" id="inputSelect" onchange="handleSelectChange(this)">
                                 <option th:each=" c : ${categories}" 
-                                th:value="${c.expense_id}"
-                                th:text="${c.expense_name}"
-                                th:style="${c.expense_bool} ? 'background-color: lightgreen' : 'background-color:#f69696'">
+                                th:value="${c.expenseId}"
+                                th:text="${c.expenseName}"
+                                th:style="${c.expenseBool} ? 'background-color: lightgreen' : 'background-color:#f69696'">
                                 </option>
                                 <!-- 分割線（見栄え用） -->
                                 <option value="" disabled>──────────</option>
@@ -124,8 +124,8 @@
                     
                     <tbody>
                         <tr class="table-light" th:each="expense_rc : ${Expense_RC}">
-                        <td class="text-center" th:text="${expense_rc.record_date}"></td>
-                        <td th:text="${expense_rc.expense_name}"></td>
+                        <td class="text-center" th:text="${expense_rc.recordDate}"></td>
+                        <td th:text="${expense_rc.expenseName}"></td>
                         <td th:text="${expense_rc.memo}"></td>
                         <td class="text-center" th:text="${expense_rc.deposit}"></td>
                         <td class="text-center" th:text="${expense_rc.withdraw}"></td>

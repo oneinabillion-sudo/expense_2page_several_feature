@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class AddFormRecord{
-    private Integer record_id;
+    private Integer recordId;
     private Boolean depoORdraw;
 
     @NotNull(message = "金額を入力してください")
@@ -20,7 +20,7 @@ public class AddFormRecord{
     @NotNull(message = "日付を選択してください")
     private LocalDate date;
     
-    private String expense_id;
+    private String expenseId;
 
     @NotNull(message = "内容を入力してください")
     @NotBlank(message = "内容を入力してください")

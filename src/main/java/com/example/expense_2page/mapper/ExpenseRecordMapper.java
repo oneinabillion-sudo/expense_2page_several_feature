@@ -21,7 +21,7 @@ public interface ExpenseRecordMapper {
 
     int update(ExpenseRecords expenseRecords);
 
-    void delete(Integer record_id);
+    void delete(Integer recordId);
 
     
 }
