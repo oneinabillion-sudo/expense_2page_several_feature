@@ -1,6 +1,7 @@
 package com.example.expense_2page.enums;
 
 public enum Period {
+    DEFAULT("指定なし"),
     TODAY("今日分"),
     WEEK("1週間"),
     MONTH("1カ月"),

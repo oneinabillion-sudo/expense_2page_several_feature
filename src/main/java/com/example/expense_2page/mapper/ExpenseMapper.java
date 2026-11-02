@@ -15,7 +15,7 @@ public interface ExpenseMapper {
     
 
     List<ExpenseRecords> findRecord(@Param("order") String order, @Param("filterList") List<Integer> id,
-                            @Param("period") String period);// 全件取得
+                            @Param("period") String period, @Param("keyword") String keyword);
 
     List<ExpenseCategory> findAllCategoryName();// 費目ID、費目名、費目Boolean、全取得
 

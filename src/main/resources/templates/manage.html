@@ -48,6 +48,10 @@
                         </option>
                     </select><br>
 
+                        <Strong>キーワード</Strong>
+
+                        <input type="text" th:field="*{recordKeyword}"><br>
+
 
                     <button type="submit">絞り込み</button><br>
                     <button type="submit" th:formaction="@{/manage}" formmethod="get">絞り込み解除</button>

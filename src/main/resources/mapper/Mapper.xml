@@ -66,6 +66,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 #{id}
             </foreach>
             </if>
+            <if test="keyword != null and keyword != '' ">
+                AND r.memo LIKE CONCAT('%', #{keyword}, '%')
+            </if>
         </where>
         ORDER BY r.record_date
         <choose>
