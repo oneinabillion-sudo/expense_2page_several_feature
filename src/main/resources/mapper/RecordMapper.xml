@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.expense_2page.mapper.ExpenseMapper">
+<mapper namespace="com.example.expense_2page.mapper.ExpenseRecordMapper">
 
     <!--
         <update id="createRecord">
@@ -26,8 +26,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
     -->
-    
-
 
     <select id="findRecord" resultType="com.example.expense_2page.entity.ExpenseRecords">
         SELECT r.record_id, r.record_date, c.expense_name, r.memo, r.deposit, r.withdraw 
@@ -77,22 +75,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </choose>
     </select>
 
-    <select id="findAllCategoryName" resultType="com.example.expense_2page.entity.ExpenseCategory">
-        SELECT expense_id, expense_name, expense_bool
-        FROM expense_category
-    </select>
-
-    <select id="getExpenseBool" resultType="java.lang.Boolean">
-        SELECT expense_bool 
-        FROM expense_category
-        WHERE expense_id = #{expense_id}
-    </select>
-
-
-    <insert id="insertNewExpense" parameterType="com.example.expense_2page.entity.ExpenseCategory" useGeneratedKeys="true" keyProperty="expense_id">
-        INSERT INTO expense_category (expense_name, expense_bool)
-        VALUES (#{expense_name}, #{expense_bool})
-    </insert>
 
     <insert id="insert" parameterType="com.example.expense_2page.entity.ExpenseRecords" useGeneratedKeys="true" keyProperty="record_id">
         INSERT INTO expense_record (record_date, expense_id, memo, deposit, withdraw)

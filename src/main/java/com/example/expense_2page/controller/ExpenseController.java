@@ -16,24 +16,24 @@ import com.example.expense_2page.form.ListAddFormRecord;
 import com.example.expense_2page.form.ListUpdateForm;
 import com.example.expense_2page.form.UpdateForm;
 import com.example.expense_2page.service.ExpenseService;
+
+import lombok.RequiredArgsConstructor;
+
 import com.example.expense_2page.enums.Period;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
+@RequiredArgsConstructor 
 public class ExpenseController {
 
     private final ExpenseService expenseService;
-
-    public ExpenseController(ExpenseService expenseService) {
-        this.expenseService = expenseService;
-    }
 
     /* -----------------ページ遷移時のハンドラーメソッド----------------------- */
 
     // URLアクセス時
     @GetMapping("/manage")
-    public String getTopPage(@RequestParam(defaultValue = "desc") String order, ListFilterForm listFilterForm,
+    public String getTopPage(@RequestParam(defaultValue = "desc") String order,
             @ModelAttribute AddFormRecord addFormRecord, Model model) {
         System.out.println("アクセス時のリクエストが届きました");
 
@@ -72,8 +72,9 @@ public class ExpenseController {
     // 1レコード追加
     @PostMapping("/addRecord")
     public String addRecord(@Validated @ModelAttribute AddFormRecord addFormRecord, BindingResult result,
-            @RequestParam(defaultValue = "desc") String order, ListFilterForm listFilterForm,
-            @ModelAttribute ListAddFormRecord listAddFormRecord, Model model) {
+            @RequestParam(defaultValue = "desc") String order, Model model,
+            @ModelAttribute ListAddFormRecord listAddFormRecord, 
+            @ModelAttribute ListFilterForm listFilterForm) {
 
         if (result.hasErrors()) {
             System.out.println("バリデーションエラーが起きたよ");
@@ -153,7 +154,7 @@ public class ExpenseController {
         System.out.println("絞り込みのリクエスト値を受け取りました！");
 
 
-        model.addAttribute("listFilterForm", new ListFilterForm());
+        
         model.addAttribute("DateList", Period.values());
         model.addAttribute("Expense_RC", expenseService.getFilterRecord(order, listFilterForm));
         model.addAttribute("categories", expenseService.findAllCategoryName());

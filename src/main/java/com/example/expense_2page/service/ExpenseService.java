@@ -8,30 +8,38 @@ import com.example.expense_2page.form.AddFormRecord;
 import com.example.expense_2page.form.ListFilterForm;
 import com.example.expense_2page.form.ListUpdateForm;
 import com.example.expense_2page.form.UpdateForm;
-import com.example.expense_2page.mapper.ExpenseMapper;
+import com.example.expense_2page.mapper.ExpenseCategoryMapper;
+import com.example.expense_2page.mapper.ExpenseRecordMapper;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Service 
+@RequiredArgsConstructor 
 public class ExpenseService {
     
+
+
     // DI注入
-    private final ExpenseMapper expenseMapper;
-    public ExpenseService(ExpenseMapper expenseMapper){
-        this.expenseMapper = expenseMapper;
-    }
+    private final ExpenseRecordMapper recordMapper;
+
+    private final ExpenseCategoryMapper categoryMapper;
 
     // 全件取得　（SELECT findAll）
     public List<ExpenseRecords> findRecord(String order){
         String safeOrder = "asc".equalsIgnoreCase(order) ? "asc" : "desc";
-        return expenseMapper.findRecord(safeOrder, new ArrayList<>(), null, null);
+        ListFilterForm filterValues = new ListFilterForm();
+
+        System.out.println("Service"+filterValues.getRecordKeyword());
+        return recordMapper.findRecord(safeOrder, new ArrayList<>(), null, null);
     }
 
     // 追加フォームページに出力する費目名データを返す+ expense_categoryの全件取得
     public List<ExpenseCategory> findAllCategoryName(){
-        return expenseMapper.findAllCategoryName();
+        return categoryMapper.findAllCategoryName();
     }
 
     // 新規費目追記
@@ -40,7 +48,7 @@ public class ExpenseService {
         ExpenseCategory newExpense = new ExpenseCategory();
         newExpense.setExpense_name(name);
         newExpense.setExpense_bool(bool);
-        expenseMapper.insertNewExpense(newExpense);
+        categoryMapper.insertNewExpense(newExpense);
 
         return newExpense.getExpense_id();
     }
@@ -61,7 +69,7 @@ public class ExpenseService {
             dORwがtrueだったら、違ったら↓の処理でやる！
             */
 
-            Boolean expenseBool = expenseMapper.getExpenseBool(expense_ID);
+            Boolean expenseBool = categoryMapper.getExpenseBool(expense_ID);
 
             System.out.println("真偽値は：" + expenseBool + "だよ");
 
@@ -72,7 +80,7 @@ public class ExpenseService {
             }else{// falseだったら出金処理
                 records.setWithdraw(addFormRecord.getPrice());
             }
-            expenseMapper.insert(records);
+            recordMapper.insert(records);
     }
     // 一括更新
     public void update(ListUpdateForm listUpdateForm){
@@ -86,7 +94,7 @@ public class ExpenseService {
             entity.setMemo(record.getMemo());
 
             
-            int count = expenseMapper.update(entity);
+            int count = recordMapper.update(entity);
             System.out.println("更新件数: " + count);
             
         }
@@ -95,7 +103,7 @@ public class ExpenseService {
 
     // 1行削除
     public void deleteRecord(Integer record_id){
-        expenseMapper.delete(record_id);
+        recordMapper.delete(record_id);
     }
 
     // 費目の絞り込み検索
@@ -110,7 +118,7 @@ public class ExpenseService {
             System.out.println(d);
         }
 
-        return expenseMapper.findRecord(safeOrder, listFilterForm.getExpenseIdList(), listFilterForm.getPeriod(), listFilterForm.getRecordKeyword());
+        return recordMapper.findRecord(safeOrder, listFilterForm.getExpenseIdList(), listFilterForm.getPeriod(), listFilterForm.getRecordKeyword());
 
         
         

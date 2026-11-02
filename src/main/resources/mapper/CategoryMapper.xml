@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.expense_2page.mapper.ExpenseCategoryMapper">
+
+ <select id="findAllCategoryName" resultType="com.example.expense_2page.entity.ExpenseCategory">
+        SELECT expense_id, expense_name, expense_bool
+        FROM expense_category
+    </select>
+
+    <select id="getExpenseBool" resultType="java.lang.Boolean">
+        SELECT expense_bool 
+        FROM expense_category
+        WHERE expense_id = #{expense_id}
+    </select>
+
+
+    <insert id="insertNewExpense" parameterType="com.example.expense_2page.entity.ExpenseCategory" useGeneratedKeys="true" keyProperty="expense_id">
+        INSERT INTO expense_category (expense_name, expense_bool)
+        VALUES (#{expense_name}, #{expense_bool})
+    </insert>
+</mapper>

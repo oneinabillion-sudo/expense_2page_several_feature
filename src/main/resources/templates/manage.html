@@ -39,7 +39,7 @@
                     </ul>
 
                         <strong>日付</strong>
-                        <select name="period">
+                    <select th:field="*{period}">
                         <option th:each=" date : ${DateList} "
                         th:text="${date.label}"
                         th:value="${date.name()}"
